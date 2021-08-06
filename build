@@ -171,7 +171,9 @@ function setup_variables() {
     YLW="\033[01;33m"
 
     # Configuration variables
-    CONFIGURATION=( "--disable-multilib" "--disable-werror" )
+    CONFIGURATION=( "--disable-multilib" "--disable-werror" "--with-pkgversion=EternalX GCC"
+                    "CFLAGS=-g0 -O3 -fstack-protector-strong -fuse-linker-plugin -ffunction-sections -fdata-sections"
+                    "CXXFLAGS=-g0 -O3 -fstack-protector-strong -fuse-linker-plugin -ffunction-sections -fdata-sections" )
     JOBS="-j$(($(nproc --all) + 1))"
     DEPTH_FLAG=true
 
@@ -586,7 +588,8 @@ function build_binutils() {
     ../binutils/configure "${CONFIGURATION[@]}" \
                           --target=${TARGET} \
                           --prefix="${INSTALL}" \
-                          --disable-gdb
+                          --disable-gdb \
+                          --enable-gold
     make "${JOBS}" || die "Error while building binutils!" -n
     make install "${JOBS}" || die "Error while installing binutils!" -n
 }
